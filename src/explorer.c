@@ -58,6 +58,8 @@ filetree_node_t* getPackingRoot(filetree_node_t *node)
 static filetree_node_t* ui_ctxMenuTarget = NULL;
 static Vector2 ui_ctxMenuPos;
 
+// FIXME: does not support base file (dt/ls)
+// FIXME: does not support localized files (data(us_en))
 void extractNodeToFile(filetree_node_t *node)
 {
     if (node->res->flags & RES_FLAG_DIR) {
@@ -80,8 +82,6 @@ void extractNodeToFile(filetree_node_t *node)
     uint8_t *rawFileData = (uint8_t*)malloc(node->res->sizeCompressed);
 
     FILE *fIn = fopen(localFilename, "rb");
-    // size_t padSize = (0x80 - (node->res->packOffset % 0x80)) % 0x80;
-    // int o = node->res->packOffset + padSize;
     fseek(fIn, node->res->packOffset, SEEK_SET);
     fread(rawFileData, node->res->sizeCompressed, 1, fIn);
     fclose(fIn);
@@ -95,10 +95,9 @@ void extractNodeToFile(filetree_node_t *node)
 
     // not compressed
     if (node->res->sizeCompressed == node->res->sizeUncompressed) {
-        // fwrite(rawFileData+0x80, node->res->sizeUncompressed, 1, fOut);
         dataOffset = 0x80;
     }
-    // else
+
     {
         uLongf destLen = node->res->sizeUncompressed;
         uint8_t *uncompressedFileData = (uint8_t*)calloc(1, destLen);

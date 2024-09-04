@@ -262,3 +262,16 @@ void freeResources(resource_t *resources)
 
     stbds_arrfree(resources);
 }
+
+resource_t *resource_clone(resource_t *res)
+{
+    resource_t *newRes = (resource_t*)malloc(sizeof(*newRes));
+    newRes->packOffset = res->packOffset;
+    newRes->filename = strdup(res->filename);
+    newRes->sizeCompressed = res->sizeCompressed;
+    newRes->sizeUncompressed = res->sizeUncompressed;
+    newRes->timestamp = res->timestamp;
+    newRes->flags = res->flags;
+
+    return newRes;
+}

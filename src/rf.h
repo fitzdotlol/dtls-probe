@@ -56,3 +56,5 @@ typedef struct {
 resource_t* loadResourcesFromRFFile(const char *filename);
 void saveResourcesToRFFile(resource_t *resources, const char *filename);
 void freeResources(resource_t *resources);
+
+resource_t *resource_clone(resource_t *res);

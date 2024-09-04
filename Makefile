@@ -1,4 +1,4 @@
-SOURCE_FILES=src/main.c src/file.c src/rf.c src/patchlist.c src/explorer.c src/vendor/mkdir_p.c
+SOURCE_FILES=src/main.c src/file.c src/rf.c src/patchlist.c src/explorer.c src/filetree.c src/vendor/mkdir_p.c
 
 all:
 	mkdir -p bin

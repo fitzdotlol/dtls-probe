@@ -62,13 +62,6 @@ filetree_node_t* filetree_fromRFFile(const char *filename)
     }
 
     filetree_node_t *root = (filetree_node_t*)calloc(1, sizeof(*root));
-    root->parent = NULL;
-    root->children = NULL;
-    root->path = NULL;
-    // TODO: can this just be null? I'd love to just remove all of these
-    // as this is zeroed 6anyway.
-    root->filename = NULL;
-    root->res = NULL;
 
     preRoot->parent = root;
     stbds_arrput(root->children, preRoot);

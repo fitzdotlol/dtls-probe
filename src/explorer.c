@@ -1,8 +1,6 @@
-#include "rf.h"
 #include <assert.h>
-
 #include <stdint.h>
-#include <zconf.h>
+
 #include <zlib.h>
 #include <raylib.h>
 
@@ -12,7 +10,9 @@
 #include "vendor/mkdir_p.h"
 #include "vendor/stb_ds.h"
 
+#include "config.h"
 #include "filetree.h"
+#include "rf.h"
 
 #define PANEL_PADDING 8
 #define HEADER_HEIGHT 24
@@ -35,12 +35,6 @@ size_t numExpandedLines(filetree_node_t *node)
 
     return len;
 }
-
-#define GAME_CONTENT_PATH "/home/fitz/cemu_games/Super Smash Bros for Wii U [Game] [0005000010144f00]/content/"
-#define UPDATE_CONTENT_PATH "/home/fitz/cemu_games/Super Smash Bros for Wii U [Update] [0005000e10144f00]/content/patch/"
-#define MOD_WORKSPACE_PATH "/home/fitz/s4workspace/"
-#define MOD_CONTENT_PATH "/home/fitz/.local/share/Cemu/graphicPacks/SuperSmashBrosVice/content/patch/"
-#define EXTRACT_PATH "/home/fitz/s4data/"
 
 filetree_node_t* getPackingRoot(filetree_node_t *node)
 {
@@ -72,7 +66,7 @@ void extractNodeToFile(filetree_node_t *node)
 
     filetree_node_t *pr = getPackingRoot(node);
     assert(pr);
-    const char *localFilename = TextFormat(UPDATE_CONTENT_PATH "data/%spacked", pr->path);
+    const char *localFilename = TextFormat("%sdata/%spacked", UPDATE_CONTENT_PATH, pr->path);
 
     if (!FileExists(localFilename)) {
         printf("%s does not exist; skipping %s...\n", localFilename, node->path);
@@ -86,7 +80,7 @@ void extractNodeToFile(filetree_node_t *node)
     fread(rawFileData, node->res->sizeCompressed, 1, fIn);
     fclose(fIn);
 
-    const char *path = TextFormat(EXTRACT_PATH "data/%s", node->path);
+    const char *path = TextFormat("%sdata/%s", EXTRACT_PATH, node->path);
     printf(">>> extracting %s\n", path);
 
     mkdir_p(GetDirectoryPath(path));

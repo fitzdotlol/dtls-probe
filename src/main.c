@@ -8,6 +8,7 @@
 #define STB_DS_IMPLEMENTATION
 #include "vendor/stb_ds.h"
 
+#include "config.h"
 #include "rf.h"
 #include "patchlist.h"
 #include "filetree.h"
@@ -56,14 +57,14 @@ void writeTreePathsToPatchlist(filetree_node_t *node, patchlist_t *patchlist)
     }
 }
 
-#define GAME_CONTENT_PATH "/home/fitz/cemu_games/Super Smash Bros for Wii U [Game] [0005000010144f00]/content/"
-#define UPDATE_CONTENT_PATH "/home/fitz/cemu_games/Super Smash Bros for Wii U [Update] [0005000e10144f00]/content/patch/"
-#define MOD_WORKSPACE_PATH "/home/fitz/s4workspace/"
-#define MOD_CONTENT_PATH "/home/fitz/.local/share/Cemu/graphicPacks/SuperSmashBrosVice/content/patch/"
-
 int main(int argc, char **argv)
 {
-    filetree_node_t *resFileTree = filetree_fromRFFile(UPDATE_CONTENT_PATH "resource(us_en)");
+    config_load();
+
+    const char *s;
+    
+    s = TextFormat("%s%s", UPDATE_CONTENT_PATH, "resource(us_en)");
+    filetree_node_t *resFileTree = filetree_fromRFFile(s);
     filetree_node_t *localFileTree = filetree_fromWorkspacePath(MOD_WORKSPACE_PATH);
 
     // NOTE: populate `path` fields
@@ -76,15 +77,18 @@ int main(int argc, char **argv)
     // filetree_merge(resFileTree, localFileTree);
 
     {
-        patchlist_t *patchlist = patchlist_loadFromFile(UPDATE_CONTENT_PATH "patchlist");
+        s = TextFormat("%s%s", UPDATE_CONTENT_PATH, "patchlist");
+        patchlist_t *patchlist = patchlist_loadFromFile(s);
         writeTreePathsToPatchlist(localFileTree, patchlist);
-        patchlist_saveToFile(patchlist, MOD_CONTENT_PATH "patchlist");
+        s = TextFormat("%s%s", MOD_CONTENT_PATH, "patchlist");
+        patchlist_saveToFile(patchlist, s);
         patchlist_free(patchlist);
     }
 
     {
         resource_t *newResources = filetree_flattenToResources(resFileTree);
-        saveResourcesToRFFile(newResources, MOD_CONTENT_PATH "resource(us_en)");
+        s = TextFormat("%s%s", MOD_CONTENT_PATH, "resource(us_en)");
+        saveResourcesToRFFile(newResources, s);
         freeResources(newResources);
     }
 

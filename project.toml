@@ -1,0 +1,7 @@
+GAME_CONTENT_PATH = "/home/fitz/cemu_games/Super Smash Bros for Wii U [Game] [0005000010144f00]/content/"
+UPDATE_CONTENT_PATH = "/home/fitz/cemu_games/Super Smash Bros for Wii U [Update] [0005000e10144f00]/content/patch/"
+
+MOD_WORKSPACE_PATH = "/home/fitz/s4workspace/"
+MOD_CONTENT_PATH = "/home/fitz/.local/share/Cemu/graphicPacks/SuperSmashBrosVice/content/patch/"
+
+EXTRACT_PATH = "/home/fitz/s4data/"
